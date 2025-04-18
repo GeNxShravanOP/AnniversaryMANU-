@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<center>
+  <title>CHULIT JA</title>
+<h2>Cheers to 1 Year Manu!</h2>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom right, #ffdee9, #b5fffc);
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .photo {
+      position: absolute;
+      width: 100px;
+      cursor: grab;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .photo:hover {
+      transform: scale(1.15);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+
+    #fire-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      background: url('fire.gif') no-repeat center/cover;
+      z-index: 1;
+    }
+
+    #vessel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 180px;
+      background: url('vessel.png') no-repeat center/contain;
+      z-index: 2;
+      transition: transform 4s ease;
+    }
+
+    #reveal-btn {
+      display: none;
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      font-size: 20px;
+      background: linear-gradient(135deg, #ff4081, #ff8f00);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 3;
+    }
+
+    #reveal-btn:hover {
+      background: linear-gradient(135deg, #ff80ab, #ffc107);
+    }
+
+    .final-photo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 350px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      z-index: 4;
+      transition: transform 1s ease;
+    }
+
+    h1 {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 48px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+      z-index: 5;
+    }
+
+    #introPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      z-index: 10;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #redirectPopup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      font-size: 24px;
+    }
+
+    #redirectPopup button {
+      padding: 12px 24px;
+      font-size: 20px;
+      background: linear-gradient(135deg, #ff4081, #ff8f00);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <h1>CHULIT JA</h1>
+
+  <div id="fire-container"></div>
+  <div id="vessel"></div>
+
+  <button id="reveal-btn">Reveal the Memory Manu</button>
+
+  <img id="final-photo1" class="final-photo" src="final1.jpeg" alt="Happy Anniversary Manu ❤️">
+
+  <script>
+    const totalPhotos = 10;
+    let photosInVessel = 0;
+    let draggedPhoto = null;
+
+    const photoURLs = [
+      'pic1.jpeg',
+      'pic2.jpeg',
+      'pic3.jpeg',
+      'pic4.jpeg',
+      'pic5.jpeg',
+      'pic6.jpeg',
+      'pic7.jpeg',
+      'pic8.jpeg',
+      'pic9.jpeg',
+      'pic10.jpeg'
+    ];
+
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('introPopup').style.display = 'none';
+      }, 4000);
+
+      for (let i = 0; i < totalPhotos; i++) {
+        createDraggablePhoto(photoURLs[i]);
+      }
+    }
+
+    function createDraggablePhoto(url) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.className = 'photo';
+      img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+      img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+      img.draggable = true;
+
+      img.addEventListener('dragstart', () => {
+        draggedPhoto = img;
+      });
+
+      document.body.appendChild(img);
+    }
+
+    const vessel = document.getElementById('vessel');
+    vessel.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    vessel.addEventListener('drop', () => {
+      if (draggedPhoto) {
+        draggedPhoto.style.display = 'none';
+        photosInVessel++;
+        if (photosInVessel === totalPhotos) {
+          document.getElementById('reveal-btn').style.display = 'block';
+        }
+      }
+    });
+
+    document.getElementById('reveal-btn').addEventListener('click', () => {
+      const lid = document.getElementById('vessel');
+      lid.style.transform += ' rotateX(60deg)';
+
+      const finalPhoto = document.getElementById('final-photo1');
+      setTimeout(() => {
+        finalPhoto.style.transform = 'translate(-50%, -50%) scale(1)';
+      }, 4000);
+
+      const audio = new Audio('audio.mp3');
+      audio.play();
+
+      audio.addEventListener('ended', () => {
+        setTimeout(() => {
+          showRedirectPopup();
+        }, 20000);
+      });
+    });
+
+    function showRedirectPopup() {
+      document.getElementById('redirectPopup').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
